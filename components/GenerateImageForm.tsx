@@ -35,6 +35,9 @@ const FormSchema = z.object({
   text: z.string({
     required_error: "Please select a text for the model to use.",
   }),
+  token: z.string({
+    required_error: "Please provide a Hugging Face Write access token.",
+  })
 });
 
 // Define the props interface for the GenerateImageForm component
@@ -60,6 +63,8 @@ export function GenerateImageForm({ handleGetImage: handleGetImage }: GenerateIm
     const imageRequest: CreateImageRequest = {
       modelUrl: data.imageModel,
       text: data.text,
+      token: data.token,
+
     };
     
     // Call the provided handler function with the image request
@@ -70,7 +75,6 @@ export function GenerateImageForm({ handleGetImage: handleGetImage }: GenerateIm
 
   return (
     <div className="ml-8 mr-8">
-      {/* Form component that uses react-hook-form */}
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           {/* Form field for selecting the image model */}
@@ -80,7 +84,6 @@ export function GenerateImageForm({ handleGetImage: handleGetImage }: GenerateIm
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Image Model</FormLabel>
-                {/* Select component for choosing a image model */}
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
@@ -88,11 +91,10 @@ export function GenerateImageForm({ handleGetImage: handleGetImage }: GenerateIm
                 >
                   <FormControl>
                     <SelectTrigger>
-                      <SelectValue placeholder="Select a verified email to display" />
+                      <SelectValue placeholder="Select an image model" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {/* Map through available image models */}
                     {IMAGE_MODELS.map((model: ImageModel, index: number) => (
                       <SelectItem key={`${model.name}-${index}`} value={model.url}>
                         {model.name}
@@ -100,13 +102,12 @@ export function GenerateImageForm({ handleGetImage: handleGetImage }: GenerateIm
                     ))}
                   </SelectContent>
                 </Select>
-                <FormDescription>
-                  This model will generate your image.
-                </FormDescription>
+                <FormDescription>This model will generate your image.</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
+
           {/* Form field for entering the text */}
           <FormField
             control={form.control}
@@ -115,7 +116,6 @@ export function GenerateImageForm({ handleGetImage: handleGetImage }: GenerateIm
               <FormItem>
                 <FormLabel>Text</FormLabel>
                 <FormControl>
-                  {/* Textarea component for entering text */}
                   <Textarea
                     disabled={formSubmitting}
                     rows={6}
@@ -123,13 +123,36 @@ export function GenerateImageForm({ handleGetImage: handleGetImage }: GenerateIm
                     {...field}
                   />
                 </FormControl>
+                <FormDescription>The text used to convert to image.</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {/* Form field for entering the Hugging Face token */}
+          <FormField
+            control={form.control}
+            name="token"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Hugging Face API Token</FormLabel>
+                <FormControl>
+                  <input
+                    type="password"
+                    placeholder="Enter your Hugging Face write access token"
+                    {...field}
+                    className="w-full px-4 py-2 border rounded text-sm"
+                    disabled={formSubmitting}
+                  />
+                </FormControl>
                 <FormDescription>
-                  The text used to convert to image.
+                  Your Hugging Face API token for authorization.
                 </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
+
           {/* Submit button */}
           <Button type="submit" disabled={formSubmitting}>
             Submit

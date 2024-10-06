@@ -7,20 +7,20 @@ export interface ImageModel {
   // An array of predefined image models
   const IMAGE_MODELS: ImageModel[] = [
     {
-      name: "Facebook - Fastspeech2",
-      url: "https://api-inference.huggingface.co/models/facebook/fastspeech2-en-ljspeech",
+      name: "Black Forest Labs - FLUX.1-dev",
+      url: "https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-dev",
     },
     {
-      name: "ESPNET - Ljspeech",
-      url: "https://api-inference.huggingface.co/models/espnet/kan-bayashi_ljspeech_vits",
+      name: "OnomaAIResearch - Illustrious-xl-v0",
+      url: "https://api-inference.huggingface.co/models/OnomaAIResearch/Illustrious-xl-early-release-v0",
     },
     {
-      name: "Speechbrain - Ljspeech",
-      url: "https://api-inference.huggingface.co/models/speechbrain/tts-tacotron2-ljspeech",
+      name: "Renderartist - simplevectorflux",
+      url: "https://api-inference.huggingface.co/models/renderartist/simplevectorflux",
     },
     {
-      name: "Voicemod - Fastspeech2",
-      url: "https://api-inference.huggingface.co/models/Voicemod/fastspeech2-en-male1",
+      name: "Stabilityai - Diffusion-xl-base-1.0",
+      url: "https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-xl-base-1.0",
     },
   ];
   
