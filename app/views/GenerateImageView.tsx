@@ -2,7 +2,7 @@
 
 import { GenerateImageForm } from "@/components/GenerateImageForm";
 import Loader from "@/components/Loader";
-import { useState,useEffect  } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 
 /**
@@ -45,7 +45,7 @@ export default function GenerateImageView() {
     setErrorMessage(null);
 
     try {
-      const response = await fetch("/api/generate-image", { 
+      const response = await fetch("/api/generate-image", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -62,7 +62,7 @@ export default function GenerateImageView() {
         throw new Error(errorData.message || "Failed to fetch image data");
       }
 
-      const data = await response.blob(); 
+      const data = await response.blob();
 
       const imgUrl = URL.createObjectURL(data);
 
@@ -70,7 +70,7 @@ export default function GenerateImageView() {
     } catch (error: any) {
       console.error("Error fetching image:", error);
       setErrorMessage(error.message || "An unexpected error occurred.");
-      setImageUrl(null); 
+      setImageUrl(null);
     } finally {
       setIsLoading(false);
     }
@@ -87,66 +87,86 @@ export default function GenerateImageView() {
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-[#09203F] to-[#537895] flex flex-col items-center justify-center p-4">
-    <div className="bg-white shadow-lg rounded-lg overflow-hidden w-full max-w-4xl flex flex-col md:flex-row">
-      {/* Sidebar with Title and Description */}
-      <div className="md:w-1/3 relative text-white p-6 flex flex-col justify-center">
-      {/* Background Image */}
-      <Image 
-        src="/a.gif" // Replace with your image path
-        alt="Background Image"
-        fill
-        style={{ objectFit: 'cover' }}
-        quality={75}
-        className="z-0" 
-        unoptimized
-        onLoad={() => setBackgroundLoading(false)}
-      />
-      {/* Loader overlay for the background image */}
+      <div className="bg-white shadow-lg rounded-lg overflow-hidden w-full max-w-4xl flex flex-col md:flex-row">
+        {/* Sidebar with Title and Description */}
+        <div className="md:w-1/3 relative text-white p-6 flex flex-col justify-center">
+          {/* Background Image */}
+          <Image
+            src="/a.gif" // Replace with your image path
+            alt="Background Image"
+            fill
+            style={{ objectFit: 'cover' }}
+            quality={75}
+            className="z-0"
+            unoptimized
+            onLoad={() => setBackgroundLoading(false)}
+          />
+          {/* Loader overlay for the background image */}
           {backgroundLoading && (
             <div className="absolute inset-0 flex items-center justify-center z-20 bg-black bg-opacity-50">
               <Loader />
             </div>
           )}
 
-      {/* Overlay to darken the background image if needed */}
-      <div className="absolute inset-0 bg-black opacity-50 z-10" />
+          {/* Overlay to darken the background image if needed */}
+          <div className="absolute inset-0 bg-black opacity-50 z-10" />
 
-      {/* Text content */}
-      <div className="relative z-20 md:mb-44">
-        <h1 className="text-3xl font-bold mb-4">AI Image Generator</h1>
-        <p className="text-lg">
-          Transform your imagination into stunning visuals. Enter a text prompt, and let our AI model generate a unique image for you.
-        </p>
-      </div>
-    </div>
+          {/* Text content */}
+          <div className="relative z-20 md:mb-44">
+            <h1 className="text-3xl font-bold mb-4">AI Image Generator</h1>
+            <p className="text-lg">
+              Transform your imagination into stunning visuals. Enter a text prompt, and let our AI model generate a unique image for you.
+            </p>
+          </div>
+        </div>
 
-      {/* Main Content Area */}
-      <div className="md:w-2/3 p-6">
-        <GenerateImageForm handleGetImage={handleGetImage} />
+        {/* Main Content Area */}
+        <div className="md:w-2/3 p-6">
+          <GenerateImageForm handleGetImage={handleGetImage} />
 
-        {/* Display Loader, Image, or Error Message */}
-        <div className="mt-6 flex justify-center items-center h-96 border border-gray-200 rounded-lg bg-gray-50">
-          {isLoading ? (
-            // Show loader when fetching image data
-            <Loader />
-          ) : errorMessage ? (
-            // Display error message if any
-            <div className="text-red-500 text-center">
-              <p>{errorMessage}</p>
-            </div>
-          ) : (
-            // Display the generated image when available
-            <>
-              {imageUrl ? (
-                <img src={imageUrl} alt="Generated" className="max-w-full max-h-full object-contain" />
-              ) : (
-                <p className="text-gray-500">Your generated image will appear here.</p>
-              )}
-            </>
-          )}
+          {/* Display Loader, Image, or Error Message */}
+          <div className="mt-6 flex justify-center items-center h-96 border border-gray-200 rounded-lg bg-gray-50">
+            {isLoading ? (
+              // Show loader when fetching image data
+              <Loader />
+            ) : errorMessage ? (
+              // Display error message if any
+              <div className="text-red-500 text-center">
+                <p>{errorMessage}</p>
+              </div>
+            ) : (
+              // Display the generated image when available
+              <>
+                {imageUrl ? (
+                  <div className="relative max-w-full max-h-full">
+                    <img src={imageUrl} alt="Generated" className="max-w-full max-h-full object-contain" />
+
+                    {/* Download Icon in the top-right corner */}
+                    <a
+                      href={imageUrl}
+                      download="generated_image.png"
+                      className="absolute top-2 right-2 bg-white rounded-full p-2 shadow-md hover:bg-gray-200"
+                      title="Download Image"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-6 w-6 text-black"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                      </svg>
+                    </a>
+                  </div>
+                ) : (
+                  <p className="text-gray-500">Your generated image will appear here.</p>
+                )}
+              </>
+            )}
+          </div>
         </div>
       </div>
     </div>
-  </div>
-);
+  );
 }
