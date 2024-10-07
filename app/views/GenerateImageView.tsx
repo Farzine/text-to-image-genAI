@@ -45,7 +45,7 @@ export default function GenerateImageView() {
     setErrorMessage(null);
 
     try {
-      const response = await fetch("/api/generate-image", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_APP_FRONTEND_URL}/api/generate-image`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
