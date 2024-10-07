@@ -1,6 +1,7 @@
 export async function POST(request: Request) {
   try {
-    const { modelUrl, input, token } = await request.json();
+    const { modelUrl, input } = await request.json();
+    const token = process.env.HUGGING_FACE_TOKEN;
 
     // Validate the request body
     if (!modelUrl) {

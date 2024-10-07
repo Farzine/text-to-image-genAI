@@ -35,9 +35,6 @@ const FormSchema = z.object({
   text: z.string({
     required_error: "Please select a text for the model to use.",
   }),
-  token: z.string({
-    required_error: "Please provide a Hugging Face Write access token.",
-  })
 });
 
 // Define the props interface for the GenerateImageForm component
@@ -63,7 +60,6 @@ export function GenerateImageForm({ handleGetImage: handleGetImage }: GenerateIm
     const imageRequest: CreateImageRequest = {
       modelUrl: data.imageModel,
       text: data.text,
-      token: data.token,
 
     };
     
@@ -124,30 +120,6 @@ export function GenerateImageForm({ handleGetImage: handleGetImage }: GenerateIm
                   />
                 </FormControl>
                 <FormDescription>The text used to convert to image.</FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          {/* Form field for entering the Hugging Face token */}
-          <FormField
-            control={form.control}
-            name="token"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Hugging Face API Token</FormLabel>
-                <FormControl>
-                  <input
-                    type="password"
-                    placeholder="Enter your Hugging Face write access token"
-                    {...field}
-                    className="w-full px-4 py-2 border rounded text-sm"
-                    disabled={formSubmitting}
-                  />
-                </FormControl>
-                <FormDescription>
-                  Your Hugging Face API token for authorization.
-                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}

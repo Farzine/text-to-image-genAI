@@ -19,11 +19,6 @@ export interface CreateImageRequest {
    */
   text: string;
 
-  /**
-   * The access token for the Hugging Face API.
-   * This token is required to authenticate the request to the Hugging Face API.
-   */
-  token: string;
 }
 
 /**
@@ -53,7 +48,6 @@ export default function GenerateImageView() {
         body: JSON.stringify({
           input: request.text,
           modelUrl: request.modelUrl,
-          token: request.token,
         }),
       });
 
